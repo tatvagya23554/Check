@@ -1,0 +1,46 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int partition(vector<int>& arr, int l, int h){
+    //int l=0, h=arr.size()-1; we cannot do this because as the recursion proceeds, l and h both vary at the same time(not just l or just h)
+    int i=l, j=h;
+    int pivot=arr[l];
+    while(i<j){
+        while(arr[i]<=pivot){
+            i++;
+        }
+        while(arr[j]>pivot){
+            j--;
+        }
+        if(i<j){
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[j], arr[l]);//Pivot finds its position
+    return j;
+}
+
+void QS(vector<int>& arr, int l, int h){
+    if(l<h){
+        int partit=partition(arr, l, h);
+        QS(arr, l, partit-1);
+        QS(arr, partit+1, h);
+    }
+}
+int main(){
+    int N;
+    cout<<"Enter the number of elements in the array: ";
+    cin>>N;
+    vector<int> array(N);
+    cout<<"Enter the elements of the array: ";
+    for(int i=0; i<N; i++){
+        cin>>array[i];
+    }
+    QS(array, 0, N-1);
+    cout<<"The sorted elements are: ";
+    for(int i=0; i<N; i++){
+        cout<<array[i]<<" ";
+    }
+    return 0;
+}
